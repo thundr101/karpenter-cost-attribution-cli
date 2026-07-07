@@ -19,11 +19,7 @@ live `kubectl` node/pod state to build a per-namespace cost breakdown.
   Pricing API
 - Allocates each node's cost across the namespaces of pods scheduled on it
   (proportional to requested CPU/memory)
-- Outputs a per-namespace chart (markdown table and matplotlib PNG chart)
-
-### Dashboard Preview
-
-![Karpenter Cost Attribution Dashboard Preview](examples/product_mockup.jpg)
+- Outputs a per-namespace chart (markdown table today; matplotlib PNG planned)
 
 ## Quickstart
 

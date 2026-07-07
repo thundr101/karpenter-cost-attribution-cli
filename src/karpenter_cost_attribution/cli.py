@@ -19,6 +19,15 @@ def build_parser() -> argparse.ArgumentParser:
     report.add_argument(
         "--output-chart", type=str, default=None, help="Path to save the cost breakdown PNG chart"
     )
+    report.add_argument(
+        "--aws-region", type=str, default="us-east-1", help="AWS Region (default: us-east-1)"
+    )
+    report.add_argument(
+        "--aws-profile", type=str, default=None, help="AWS CLI Profile (default: None)"
+    )
+    report.add_argument(
+        "--refresh-cache", action="store_true", help="Force refresh cached pricing data"
+    )
     return parser
 
 
@@ -28,8 +37,15 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "report":
         nodes = load_cluster_state(kube_context=args.kube_context)
-        rows = allocate_costs(nodes, namespace_filter=args.namespace_filter)
+        rows = allocate_costs(
+            nodes,
+            namespace_filter=args.namespace_filter,
+            aws_region=args.aws_region,
+            aws_profile=args.aws_profile,
+            refresh_cache=args.refresh_cache,
+        )
         print(render_markdown(rows))
+
         if args.output_chart:
             render_chart(rows, args.output_chart)
             print(f"Chart saved to {args.output_chart}")

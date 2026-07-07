@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "karpenter-cost-attribution-cli"
+version = "0.1.0"
+description = "Attribute Karpenter-driven EC2 spend to Kubernetes namespaces"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Brian Dixon" }]
+dependencies = [
+    "boto3>=1.34",
+    "kubernetes>=29.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "ruff>=0.4"]
+
+[project.scripts]
+karpenter-cost-attribution = "karpenter_cost_attribution.cli:main"
+
+[tool.ruff]
+line-length = 100
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

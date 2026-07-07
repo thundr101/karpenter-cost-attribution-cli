@@ -3,9 +3,9 @@
 Uses a small static fallback table for common instance types so the tool
 is usable offline/in tests; falls back to the live Pricing API otherwise.
 """
+
 from __future__ import annotations
 
-import json
 
 import boto3
 
@@ -21,7 +21,9 @@ _FALLBACK_RATES: dict[str, float] = {
 }
 
 
-def get_hourly_rate(instance_type: str, capacity_type: str = "on-demand", region: str = "us-east-1") -> float:
+def get_hourly_rate(
+    instance_type: str, capacity_type: str = "on-demand", region: str = "us-east-1"
+) -> float:
     """Return the hourly rate for an instance type / capacity type.
 
     Spot pricing is approximated as a flat 70% discount off on-demand when

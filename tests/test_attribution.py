@@ -7,7 +7,9 @@ def test_single_namespace_gets_full_node_cost():
         name="node-1",
         instance_type="m5.large",
         capacity_type="on-demand",
-        pods=[PodAllocation(namespace="team-a", cpu_request_millicores=1000, memory_request_mib=512)],
+        pods=[
+            PodAllocation(namespace="team-a", cpu_request_millicores=1000, memory_request_mib=512)
+        ],
     )
     rows = allocate_costs([node])
     assert len(rows) == 1
@@ -37,7 +39,9 @@ def test_namespace_filter_wildcard():
         capacity_type="on-demand",
         pods=[
             PodAllocation(namespace="team-a", cpu_request_millicores=500, memory_request_mib=256),
-            PodAllocation(namespace="kube-system", cpu_request_millicores=500, memory_request_mib=256),
+            PodAllocation(
+                namespace="kube-system", cpu_request_millicores=500, memory_request_mib=256
+            ),
         ],
     )
     rows = allocate_costs([node], namespace_filter="team-*")

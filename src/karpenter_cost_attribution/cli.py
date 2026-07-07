@@ -1,11 +1,12 @@
 """Command-line entrypoint: `karpenter-cost-attribution report ...`"""
+
 from __future__ import annotations
 
 import argparse
 
 from karpenter_cost_attribution.attribution import allocate_costs
 from karpenter_cost_attribution.k8s_client import load_cluster_state
-from karpenter_cost_attribution.report import render_markdown
+from karpenter_cost_attribution.report import render_markdown, render_chart
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -15,6 +16,9 @@ def build_parser() -> argparse.ArgumentParser:
     report = sub.add_parser("report", help="Report cost attribution by namespace")
     report.add_argument("--kube-context", type=str, default=None)
     report.add_argument("--namespace-filter", type=str, default=None, help="e.g. 'team-*'")
+    report.add_argument(
+        "--output-chart", type=str, default=None, help="Path to save the cost breakdown PNG chart"
+    )
     return parser
 
 
@@ -26,6 +30,9 @@ def main(argv: list[str] | None = None) -> int:
         nodes = load_cluster_state(kube_context=args.kube_context)
         rows = allocate_costs(nodes, namespace_filter=args.namespace_filter)
         print(render_markdown(rows))
+        if args.output_chart:
+            render_chart(rows, args.output_chart)
+            print(f"Chart saved to {args.output_chart}")
 
     return 0
 

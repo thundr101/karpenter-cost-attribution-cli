@@ -5,6 +5,7 @@ Memory-proportional allocation is left as a documented alternative rather
 than blended in by default, since CPU is the more common bin-packing
 driver for Karpenter consolidation decisions.
 """
+
 from __future__ import annotations
 
 from collections import defaultdict
